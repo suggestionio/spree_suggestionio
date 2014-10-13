@@ -1,0 +1,22 @@
+<script>
+(function(e,t,n,r){var i=e.createElement(t),s=e.getElementsByTagName(t)[0];if(i.readyState){i.onreadystatechange=function(){if(i.readyState=="loaded"||i.readyState=="complete"){i.onreadystatechange=null;r()}}}else{i.onload=function(){r()}}i.src=n;s.parentNode.insertBefore(i,s)})(document,"script","https://www.suggestion.io/assets/analytics.js?q="+Math.random(),
+  function(){
+    sio.updateCookie();
+    <% if @order && order_just_completed?(@order) %>
+      var lineItems = []
+
+      <% @order.line_items.each do |line_item| %>
+        lineItems.push({
+          product_id: '<%= line_item.variant.sku %>',
+          quantity: '<%= line_item.quantity %>',
+          price: '<%= line_item.price %>'
+        });
+      <% end %>
+
+      SuggestionIO.trackPurchasedProducts({
+        orderNumber: '<%= @order.number %>',
+        amount: '<%= @order.total %>',
+        lineItems: lineItems});
+    <% end %>
+  });
+</script>
